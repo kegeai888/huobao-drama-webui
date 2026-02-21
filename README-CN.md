@@ -650,7 +650,7 @@ A: 查看 [docs/](docs/) 目录获取完整文档：
 - 📧 **Email**: [18550175439@163.com](mailto:18550175439@163.com)
 - 🐙 **GitHub**: [https://github.com/chatfire-AI/huobao-drama](https://github.com/chatfire-AI/huobao-drama)
 
-### 本版本作者
+### 本 ComfyUI 贡献者
 
 **你们喜爱的老王**
 

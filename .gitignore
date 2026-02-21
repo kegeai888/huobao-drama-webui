@@ -87,3 +87,8 @@ build.sh
 /data/storage/
 /web/package-lock.json
 .DS_Store
+
+# Portable build
+huobao-drama-portable/
+*.zip
+*.tar.gz

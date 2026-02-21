@@ -649,12 +649,12 @@ Configure in 2 minutes: [API Aggregation Site](https://api.chatfire.site/models)
 - 📧 **Email**: [18550175439@163.com](mailto:18550175439@163.com)
 - 🐙 **GitHub**: [https://github.com/chatfire-AI/huobao-drama](https://github.com/chatfire-AI/huobao-drama)
 
-### This Version Author
+### 本 ComfyUI 贡献者
 
-**Your Beloved Lao Wang (老王)**
+**你们喜爱的老王**
 
-- 📺 **Bilibili**: [https://space.bilibili.com/97727630](https://space.bilibili.com/97727630)
-- 🎬 **Focus**: ComfyUI Workflows, AI Video Generation
+- 📺 **B站**: [https://space.bilibili.com/97727630](https://space.bilibili.com/97727630)
+- 🎬 **专注**: ComfyUI 工作流、AI 视频生成
 
 > _"Let AI help us do more creative things"_
 
