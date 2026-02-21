@@ -18,6 +18,14 @@
 
         <!-- Right section: Actions + Right slot -->
         <div class="header-right">
+          <!-- Contributor Info | 贡献者信息 -->
+          <div class="contributor-info">
+            <span class="contributor-text">ComfyUI 贡献者: 你们喜爱的老王</span>
+            <a href="https://space.bilibili.com/97727630" target="_blank" class="bilibili-btn">
+              <el-icon><VideoPlay /></el-icon>
+              <span>B站</span>
+            </a>
+          </div>
           
           <!-- Language Switcher | 语言切换 -->
           <LanguageSwitcher v-if="showLanguage" />
@@ -43,7 +51,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Setting } from '@element-plus/icons-vue'
+import { Setting, VideoPlay } from '@element-plus/icons-vue'
 import ThemeToggle from './ThemeToggle.vue'
 import AIConfigDialog from './AIConfigDialog.vue'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
@@ -153,6 +161,58 @@ defineExpose({
   flex-shrink: 0;
 }
 
+.contributor-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+  border: 1px solid rgba(14, 165, 233, 0.2);
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  margin-right: 8px;
+}
+
+.contributor-info:hover {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+}
+
+.contributor-text {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.dark .contributor-text {
+  color: #e5e7eb;
+}
+
+.dark .contributor-info {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+  border-color: rgba(14, 165, 233, 0.3);
+}
+
+.bilibili-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #00a1d6;
+  color: white !important;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.bilibili-btn:hover {
+  background: #0087b3;
+  transform: scale(1.05);
+}
+
 .logo {
   display: flex;
   align-items: center;
@@ -248,6 +308,10 @@ defineExpose({
 @media (max-width: 768px) {
   .header-content {
     padding: 0 var(--space-3);
+  }
+  
+  .contributor-text {
+    display: none;
   }
   
   .btn-text {
