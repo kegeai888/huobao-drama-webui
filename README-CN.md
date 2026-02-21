@@ -650,6 +650,13 @@ A: 查看 [docs/](docs/) 目录获取完整文档：
 - 📧 **Email**: [18550175439@163.com](mailto:18550175439@163.com)
 - 🐙 **GitHub**: [https://github.com/chatfire-AI/huobao-drama](https://github.com/chatfire-AI/huobao-drama)
 
+### 本版本作者
+
+**你们喜爱的老王**
+
+- 📺 **B站**: [https://space.bilibili.com/97727630](https://space.bilibili.com/97727630)
+- 🎬 **专注**: ComfyUI 工作流、AI 视频生成
+
 > _"让 AI 帮我们做更有创造力的事"_
 
 ## 项目交流群
