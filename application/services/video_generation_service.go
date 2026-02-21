@@ -237,60 +237,148 @@ func (s *VideoGenerationService) ProcessVideoGeneration(videoGenID uint) {
 		opts = append(opts, video.WithSeed(*videoGen.Seed))
 	}
 
-	// 根据参考图模式添加相应的选项，并将本地图片转换为base64
+	// 根据参考图模式添加相应的选项
+	// ComfyUI 需要原始路径，其他提供商需要 base64
 	if videoGen.ReferenceMode != nil {
 		switch *videoGen.ReferenceMode {
 		case "first_last":
-			// 首尾帧模式 - 转换本地图片为base64
+			// 首尾帧模式
 			if videoGen.FirstFrameURL != nil {
-				firstFrameBase64, err := s.convertImageToBase64(*videoGen.FirstFrameURL)
-				if err != nil {
-					s.log.Warnw("Failed to convert first frame to base64, using original URL", "error", err)
-					opts = append(opts, video.WithFirstFrame(*videoGen.FirstFrameURL))
+				if videoGen.Provider == "comfyui" {
+					// ComfyUI: 使用原始路径
+					firstFramePath := *videoGen.FirstFrameURL
+					if !strings.HasPrefix(firstFramePath, "http://") && !strings.HasPrefix(firstFramePath, "https://") && s.localStorage != nil {
+						relativePath := firstFramePath
+						if strings.Contains(firstFramePath, "/static/") {
+							parts := strings.Split(firstFramePath, "/static/")
+							if len(parts) == 2 {
+								relativePath = parts[1]
+							}
+						}
+						firstFramePath = s.localStorage.GetAbsolutePath(relativePath)
+					}
+					opts = append(opts, video.WithFirstFrame(firstFramePath))
 				} else {
-					opts = append(opts, video.WithFirstFrame(firstFrameBase64))
+					// 其他提供商: 转换为 base64
+					firstFrameBase64, err := s.convertImageToBase64(*videoGen.FirstFrameURL)
+					if err != nil {
+						s.log.Warnw("Failed to convert first frame to base64, using original URL", "error", err)
+						opts = append(opts, video.WithFirstFrame(*videoGen.FirstFrameURL))
+					} else {
+						opts = append(opts, video.WithFirstFrame(firstFrameBase64))
+					}
 				}
 			}
 			if videoGen.LastFrameURL != nil {
-				lastFrameBase64, err := s.convertImageToBase64(*videoGen.LastFrameURL)
-				if err != nil {
-					s.log.Warnw("Failed to convert last frame to base64, using original URL", "error", err)
-					opts = append(opts, video.WithLastFrame(*videoGen.LastFrameURL))
+				if videoGen.Provider == "comfyui" {
+					// ComfyUI: 使用原始路径
+					lastFramePath := *videoGen.LastFrameURL
+					if !strings.HasPrefix(lastFramePath, "http://") && !strings.HasPrefix(lastFramePath, "https://") && s.localStorage != nil {
+						relativePath := lastFramePath
+						if strings.Contains(lastFramePath, "/static/") {
+							parts := strings.Split(lastFramePath, "/static/")
+							if len(parts) == 2 {
+								relativePath = parts[1]
+							}
+						}
+						lastFramePath = s.localStorage.GetAbsolutePath(relativePath)
+					}
+					opts = append(opts, video.WithLastFrame(lastFramePath))
 				} else {
-					opts = append(opts, video.WithLastFrame(lastFrameBase64))
+					// 其他提供商: 转换为 base64
+					lastFrameBase64, err := s.convertImageToBase64(*videoGen.LastFrameURL)
+					if err != nil {
+						s.log.Warnw("Failed to convert last frame to base64, using original URL", "error", err)
+						opts = append(opts, video.WithLastFrame(*videoGen.LastFrameURL))
+					} else {
+						opts = append(opts, video.WithLastFrame(lastFrameBase64))
+					}
 				}
 			}
 		case "multiple":
-			// 多图模式 - 转换本地图片为base64
+			// 多图模式
 			if videoGen.ReferenceImageURLs != nil {
 				var imageURLs []string
 				if err := json.Unmarshal([]byte(*videoGen.ReferenceImageURLs), &imageURLs); err == nil {
-					var base64Images []string
-					for _, imgURL := range imageURLs {
-						base64Img, err := s.convertImageToBase64(imgURL)
-						if err != nil {
-							s.log.Warnw("Failed to convert reference image to base64, using original URL", "error", err, "url", imgURL)
-							base64Images = append(base64Images, imgURL)
-						} else {
-							base64Images = append(base64Images, base64Img)
+					if videoGen.Provider == "comfyui" {
+						// ComfyUI: 使用原始路径
+						var imagePaths []string
+						for _, imgURL := range imageURLs {
+							imgPath := imgURL
+							if !strings.HasPrefix(imgPath, "http://") && !strings.HasPrefix(imgPath, "https://") && s.localStorage != nil {
+								relativePath := imgPath
+								if strings.Contains(imgPath, "/static/") {
+									parts := strings.Split(imgPath, "/static/")
+									if len(parts) == 2 {
+										relativePath = parts[1]
+									}
+								}
+								imgPath = s.localStorage.GetAbsolutePath(relativePath)
+							}
+							imagePaths = append(imagePaths, imgPath)
 						}
+						opts = append(opts, video.WithReferenceImages(imagePaths))
+					} else {
+						// 其他提供商: 转换为 base64
+						var base64Images []string
+						for _, imgURL := range imageURLs {
+							base64Img, err := s.convertImageToBase64(imgURL)
+							if err != nil {
+								s.log.Warnw("Failed to convert reference image to base64, using original URL", "error", err, "url", imgURL)
+								base64Images = append(base64Images, imgURL)
+							} else {
+								base64Images = append(base64Images, base64Img)
+							}
+						}
+						opts = append(opts, video.WithReferenceImages(base64Images))
 					}
-					opts = append(opts, video.WithReferenceImages(base64Images))
 				}
 			}
 		}
 	}
 
 	// 构造imageURL参数（单图模式使用，其他模式传空字符串）
-	// 如果是本地图片，转换为base64
+	// ComfyUI 需要原始路径或 HTTP URL，不需要 base64
+	// 其他提供商可能需要 base64
 	imageURL := ""
 	if videoGen.ImageURL != nil {
-		base64Image, err := s.convertImageToBase64(*videoGen.ImageURL)
-		if err != nil {
-			s.log.Warnw("Failed to convert image to base64, using original URL", "error", err)
+		s.log.Infow("Processing imageURL", 
+			"id", videoGenID,
+			"provider", videoGen.Provider,
+			"original_url", *videoGen.ImageURL)
+		
+		if videoGen.Provider == "comfyui" {
+			// ComfyUI: 检查是否已经是 base64 数据
 			imageURL = *videoGen.ImageURL
+			
+			// 如果已经是 base64 数据，直接使用
+			if strings.HasPrefix(imageURL, "data:image/") {
+				s.log.Infow("Using base64 image data for ComfyUI", "length", len(imageURL))
+			} else if !strings.HasPrefix(imageURL, "http://") && !strings.HasPrefix(imageURL, "https://") {
+				// 如果是相对路径，转换为绝对路径
+				if s.localStorage != nil {
+					// 提取相对路径
+					relativePath := imageURL
+					if strings.Contains(imageURL, "/static/") {
+						parts := strings.Split(imageURL, "/static/")
+						if len(parts) == 2 {
+							relativePath = parts[1]
+						}
+					}
+					imageURL = s.localStorage.GetAbsolutePath(relativePath)
+					s.log.Infow("Converted to absolute path for ComfyUI", "original", *videoGen.ImageURL, "absolute", imageURL)
+				}
+			}
 		} else {
-			imageURL = base64Image
+			s.log.Infow("Converting to base64 for non-ComfyUI provider", "provider", videoGen.Provider)
+			// 其他提供商: 转换为 base64
+			base64Image, err := s.convertImageToBase64(*videoGen.ImageURL)
+			if err != nil {
+				s.log.Warnw("Failed to convert image to base64, using original URL", "error", err)
+				imageURL = *videoGen.ImageURL
+			} else {
+				imageURL = base64Image
+			}
 		}
 	}
 
@@ -334,6 +422,18 @@ func (s *VideoGenerationService) ProcessVideoGeneration(videoGenID uint) {
 		"user_prompt", videoGen.Prompt,
 		"constraint_prompt", constraintPrompt,
 		"final_prompt", prompt)
+
+	// 调试日志：打印 imageURL 的前 100 个字符
+	imageURLPreview := imageURL
+	if len(imageURL) > 100 {
+		imageURLPreview = imageURL[:100] + "..."
+	}
+	s.log.Infow("Calling GenerateVideo",
+		"id", videoGenID,
+		"provider", videoGen.Provider,
+		"imageURL_preview", imageURLPreview,
+		"imageURL_length", len(imageURL),
+		"is_base64", strings.HasPrefix(imageURL, "data:"))
 
 	result, err := client.GenerateVideo(imageURL, prompt, opts...)
 	if err != nil {
@@ -623,6 +723,10 @@ func (s *VideoGenerationService) getVideoClient(provider string, modelName strin
 		return video.NewPikaClient(baseURL, apiKey, model), nil
 	case "minimax":
 		return video.NewMinimaxClient(baseURL, apiKey, model), nil
+	case "comfyui":
+		endpoint = "/prompt"
+		queryEndpoint = "/history/{prompt_id}"
+		return video.NewComfyUIClient(baseURL, apiKey, model, endpoint, queryEndpoint), nil
 	default:
 		return nil, fmt.Errorf("unsupported video provider: %s", provider)
 	}

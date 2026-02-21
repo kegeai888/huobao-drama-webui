@@ -167,7 +167,17 @@
         </el-form-item>
 
         <el-form-item :label="$t('aiConfig.form.model')" prop="model">
+          <!-- ComfyUI 使用 WorkflowSelector -->
+          <WorkflowSelector
+            v-if="form.provider === 'comfyui' && (form.service_type === 'image' || form.service_type === 'video')"
+            v-model="form.model"
+            :service-type="form.service_type"
+            :preset-models="availableModels"
+            :placeholder="$t('aiConfig.form.modelPlaceholder')"
+          />
+          <!-- 其他厂商使用普通选择器 -->
           <el-select
+            v-else
             v-model="form.model"
             :placeholder="$t('aiConfig.form.modelPlaceholder')"
             multiple
@@ -265,6 +275,7 @@ import type {
   UpdateAIConfigRequest,
 } from "@/types/ai";
 import ConfigList from "@/views/settings/components/ConfigList.vue";
+import WorkflowSelector from "@/components/common/WorkflowSelector.vue";
 
 const props = defineProps<{
   modelValue: boolean;
@@ -353,6 +364,11 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
       models: ["gemini-3-pro-image-preview"],
     },
     { id: "openai", name: "OpenAI", models: ["dall-e-3", "dall-e-2"] },
+    {
+      id: "comfyui",
+      name: "ComfyUI",
+      models: ["sdxl", "sd15", "flux", "custom.json"],
+    },
   ],
   video: [
     {
@@ -387,6 +403,11 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
         "MiniMax-Hailuo-2.3-Fast",
         "MiniMax-Hailuo-02",
       ],
+    },
+    {
+      id: "comfyui",
+      name: "ComfyUI",
+      models: ["svd", "svd_xt", "video_wan2_2_14B_i2v.json", "custom"],
     },
     { id: "openai", name: "OpenAI", models: ["sora-2", "sora-2-pro"] },
   ],
@@ -426,6 +447,8 @@ const fullEndpointExample = computed(() => {
   } else if (serviceType === "image") {
     if (provider === "gemini" || provider === "google") {
       endpoint = "/v1beta/models/{model}:generateContent";
+    } else if (provider === "comfyui") {
+      endpoint = "/prompt";
     } else {
       endpoint = "/images/generations";
     }
@@ -440,6 +463,8 @@ const fullEndpointExample = computed(() => {
       endpoint = "/contents/generations/tasks";
     } else if (provider === "minimax") {
       endpoint = "/video_generation";
+    } else if (provider === "comfyui") {
+      endpoint = "/prompt";
     } else if (provider === "openai") {
       endpoint = "/videos";
     } else {
@@ -662,6 +687,8 @@ const handleProviderChange = () => {
     form.base_url = "https://generativelanguage.googleapis.com";
   } else if (form.provider === "minimax") {
     form.base_url = "https://api.minimaxi.com/v1";
+  } else if (form.provider === "comfyui") {
+    form.base_url = "http://127.0.0.1:8188";
   } else if (form.provider === "volces" || form.provider === "volcengine") {
     form.base_url = "https://ark.cn-beijing.volces.com/api/v3";
   } else if (form.provider === "openai") {

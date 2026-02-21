@@ -11,6 +11,11 @@ drama-generator.exe
 # Test binary
 *.test
 
+# Test files
+test_*.go
+check_*.go
+*_test.go
+
 # Output of the go coverage tool
 *.out
 
@@ -45,11 +50,23 @@ build/
 # Temporary files
 tmp/
 temp/
+*.sql
+*_response.json
 
 # Data (database and uploaded files)
 data/drama_generator.db
 data/storage/videos/*
 !data/storage/videos/.gitkeep
+
+# Generated images and videos
+data/storage/*.png
+data/storage/*.jpg
+data/storage/*.jpeg
+data/storage/*.gif
+data/storage/*.mp4
+data/storage/*.avi
+data/storage/*.mov
+data/storage/*.webm
 
 # Frontend build output
 web/dist/
@@ -59,6 +76,10 @@ web/.env.local
 
 # Config file (use config.example.yaml as template)
 configs/config.yaml
+
+# ComfyUI workflows (user-specific)
+workflows/*.json
+!workflows/.gitkeep
 
 # Docker publish documentation (optional)
 DOCKER_PUBLISH.md

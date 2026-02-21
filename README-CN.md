@@ -82,6 +82,7 @@ Huobao Drama 是一个基于 AI 的短剧自动化生产平台，实现从剧本
 - ✅ 图生视频自动生成
 - ✅ 视频合成和剪辑
 - ✅ 转场效果
+- ✅ 支持多种 AI 服务（OpenAI Sora、火山引擎、MiniMax、ComfyUI 等）
 
 ### 📦 资源管理
 
@@ -548,7 +549,7 @@ A: 使用 `http://host.docker.internal:11434/v1` 作为 Base URL。注意两点�
 1. 宿主机 Ollama 需监听 `0.0.0.0`：`export OLLAMA_HOST=0.0.0.0:11434 && ollama serve`
 2. Linux 用户使用 `docker run` 需添加：`--add-host=host.docker.internal:host-gateway`
 
-详见：[DOCKER_HOST_ACCESS.md](docs/DOCKER_HOST_ACCESS.md)
+详见：[docs/deployment/DOCKER_HOST_ACCESS.md](docs/deployment/DOCKER_HOST_ACCESS.md)
 
 ### Q: FFmpeg 未安装或找不到？
 
@@ -561,6 +562,13 @@ A: 检查后端是否启动，端口是否正确。开发模式下前端代理�
 ### Q: 数据库表未创建？
 
 A: GORM 会在首次启动时自动创建表，检查日志确认迁移是否成功。
+
+### Q: 在哪里可以找到更多文档？
+
+A: 查看 [docs/](docs/) 目录获取完整文档：
+- [ComfyUI 集成指南](docs/COMFYUI_INTEGRATION.md)
+- [部署指南](docs/deployment/)
+- [文档索引](docs/README.md)
 
 ---
 
@@ -663,3 +671,26 @@ A: GORM 会在首次启动时自动创建表，检查日志确认迁移是否成
 Made with ❤️ by Huobao Team
 
 </div>
+
+
+---
+
+## 📋 更新日志 / Changelog
+
+### v1.0.6 (2026-02-20)
+
+#### 🎨 新增功能
+
+- **🎬 ComfyUI 视频生成支持**：新增 ComfyUI 作为视频生成服务提供商，支持本地化部署和自定义工作流
+  - 支持 Stable Video Diffusion (SVD) 模型
+  - 完整的任务队列和状态管理
+  - 自动构建图生视频工作流
+  - 详细文档：[ComfyUI 集成指南](docs/COMFYUI_INTEGRATION.md)
+
+#### 🔧 技术改进
+
+- 扩展视频生成服务架构，支持更多第三方服务
+- 优化前端 AI 配置界面，新增 ComfyUI 选项
+- 完善测试覆盖率
+
+---

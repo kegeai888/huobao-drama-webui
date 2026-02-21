@@ -323,6 +323,10 @@ func (s *VideoMergeService) getVideoClient(provider string) (video.VideoClient, 
 		endpoint = "/contents/generations/tasks"
 		queryEndpoint = "/generations/tasks/{taskId}"
 		return video.NewVolcesArkClient(config.BaseURL, config.APIKey, model, endpoint, queryEndpoint), nil
+	case "comfyui":
+		endpoint = "/prompt"
+		queryEndpoint = "/history/{prompt_id}"
+		return video.NewComfyUIClient(config.BaseURL, config.APIKey, model, endpoint, queryEndpoint), nil
 	default:
 		endpoint = "/contents/generations/tasks"
 		queryEndpoint = "/generations/tasks/{taskId}"

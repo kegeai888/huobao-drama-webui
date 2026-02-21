@@ -263,8 +263,18 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
       models: ["gemini-3-pro-image-preview"],
     },
     { id: "openai", name: "OpenAI", models: ["dall-e-3", "dall-e-2"] },
+    {
+      id: "comfyui",
+      name: "ComfyUI",
+      models: ["sdxl", "sd15", "flux", "custom.json"],
+    },
   ],
   video: [
+    {
+      id: "comfyui",
+      name: "ComfyUI",
+      models: ["svd", "svd_xt", "video_wan2_2_14B_i2v.json", "custom"],
+    },
     {
       id: "volces",
       name: "火山引擎",
@@ -289,31 +299,38 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
         "sora-2-pro",
       ],
     },
-    { id: "openai", name: "OpenAI", models: ["sora-2", "sora-2-pro"] },
-    //    { id: 'minimax', name: 'MiniMax', models: ['MiniMax-Hailuo-2.3', 'MiniMax-Hailuo-2.3-Fast', 'MiniMax-Hailuo-02'] }
+    {
+      id: "minimax",
+      name: "MiniMax 海螺",
+      models: [
+        "MiniMax-Hailuo-2.3",
+        "MiniMax-Hailuo-2.3-Fast",
+        "MiniMax-Hailuo-02",
+      ],
+    },
+    { id: "openai", name: "OpenAI", models: ["sora-2", "sora-2-pro"] }
   ],
 };
 
-// 当前可用的厂商列表（只显示有激活配置的）
+// 当前可用的厂商列表（显示所有厂商）
 const availableProviders = computed(() => {
-  // 获取当前service_type下所有激活的配置
-  const activeConfigs = configs.value.filter(
-    (c) => c.service_type === form.service_type && c.is_active,
-  );
-
-  // 提取所有激活配置的provider，去重
-  const activeProviderIds = new Set(activeConfigs.map((c) => c.provider));
-
-  // 从providerConfigs中筛选出有激活配置的provider
-  const allProviders = providerConfigs[form.service_type] || [];
-  return allProviders.filter((p) => activeProviderIds.has(p.id));
+  // 返回当前 service_type 下的所有厂商
+  return providerConfigs[form.service_type] || [];
 });
 
-// 当前可用的模型列表（从已激活的配置中获取）
+// 当前可用的模型列表（从 providerConfigs 中获取）
 const availableModels = computed(() => {
   if (!form.provider) return [];
 
-  // 从已激活的配置中提取该 provider 的所有模型
+  // 从 providerConfigs 中查找该 provider 的模型列表
+  const allProviders = providerConfigs[form.service_type] || [];
+  const providerConfig = allProviders.find((p) => p.id === form.provider);
+  
+  if (providerConfig) {
+    return providerConfig.models;
+  }
+
+  // 如果在 providerConfigs 中找不到，则从已激活的配置中提取
   const activeConfigsForProvider = configs.value.filter(
     (c) =>
       c.provider === form.provider &&
@@ -361,6 +378,10 @@ const fullEndpointExample = computed(() => {
       endpoint = "/contents/generations/tasks";
     } else if (provider === "openai") {
       endpoint = "/videos";
+    } else if (provider === "minimax") {
+      endpoint = "/video_generation";
+    } else if (provider === "comfyui") {
+      endpoint = "/prompt";
     } else {
       endpoint = "/video/generations";
     }
@@ -580,6 +601,10 @@ const handleProviderChange = () => {
   // 根据厂商自动设置默认 base_url
   if (form.provider === "gemini" || form.provider === "google") {
     form.base_url = "https://api.chatfire.site";
+  } else if (form.provider === "minimax") {
+    form.base_url = "https://api.minimaxi.com/v1";
+  } else if (form.provider === "comfyui") {
+    form.base_url = "http://127.0.0.1:8188";
   } else {
     // openai, chatfire 等其他厂商
     form.base_url = "https://api.chatfire.site/v1";

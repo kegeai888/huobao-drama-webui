@@ -1,0 +1,79 @@
+========================================
+  ✅ 最终更新完成
+========================================
+
+更新日期: 2026-02-21
+状态: 完成
+
+========================================
+  完成的更新（3/3）
+========================================
+
+1. ✅ 排除 workflows 下的内容
+   - 添加规则: workflows/*.json
+   - 保留目录: workflows/.gitkeep
+   - 添加说明: workflows/README.md
+   - 影响文件: 5 个 JSON 工作流文件
+
+2. ✅ 排除所有生成的视频图片
+   - 图片格式: .png, .jpg, .jpeg, .gif
+   - 视频格式: .mp4, .avi, .mov, .webm
+   - 保护目录: data/storage/
+
+3. ✅ 启动脚本添加停止命令提示
+   - 更新文件: start-dev.cmd
+   - 更新文件: start-prod.cmd
+   - 新增提示: "运行 stop-dev.cmd 可停止所有服务"
+
+========================================
+  .gitignore 新增规则
+========================================
+
+# Generated images and videos
+data/storage/*.png
+data/storage/*.jpg
+data/storage/*.jpeg
+data/storage/*.gif
+data/storage/*.mp4
+data/storage/*.avi
+data/storage/*.mov
+data/storage/*.webm
+
+# ComfyUI workflows (user-specific)
+workflows/*.json
+!workflows/.gitkeep
+
+========================================
+  验证更新
+========================================
+
+运行以下命令检查：
+
+git status
+
+不应该看到：
+✗ workflows/*.json
+✗ data/storage/*.png
+✗ data/storage/*.mp4
+✗ configs/config.yaml
+
+应该看到：
+✓ workflows/.gitkeep
+✓ workflows/README.md
+✓ .gitignore (已更新)
+✓ start-dev.cmd (已更新)
+✓ start-prod.cmd (已更新)
+
+========================================
+  项目状态
+========================================
+
+✅ 文件清理完成
+✅ 文档重组完成
+✅ 安全检查通过
+✅ 最终更新完成
+✅ 可以安全上传 GitHub
+
+详细说明: FINAL_UPDATES.md
+
+========================================

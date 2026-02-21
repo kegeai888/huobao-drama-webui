@@ -579,6 +579,10 @@ func (s *ImageGenerationService) getImageClientWithModel(provider string, modelN
 	case "gemini", "google":
 		endpoint = "/v1beta/models/{model}:generateContent"
 		return image.NewGeminiImageClient(config.BaseURL, config.APIKey, model, endpoint), nil
+	case "comfyui":
+		endpoint = "/prompt"
+		queryEndpoint = "/history/{prompt_id}"
+		return image.NewComfyUIImageClient(config.BaseURL, config.APIKey, model, endpoint, queryEndpoint), nil
 	default:
 		endpoint = "/images/generations"
 		return image.NewOpenAIImageClient(config.BaseURL, config.APIKey, model, endpoint), nil

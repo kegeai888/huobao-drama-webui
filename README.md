@@ -548,7 +548,7 @@ A: Use `http://host.docker.internal:11434/v1` as Base URL. Note two things:
 1. Host Ollama needs to listen on `0.0.0.0`: `export OLLAMA_HOST=0.0.0.0:11434 && ollama serve`
 2. Linux users using `docker run` need to add: `--add-host=host.docker.internal:host-gateway`
 
-See: [DOCKER_HOST_ACCESS.md](docs/DOCKER_HOST_ACCESS.md)
+See: [docs/deployment/DOCKER_HOST_ACCESS.md](docs/deployment/DOCKER_HOST_ACCESS.md)
 
 ### Q: FFmpeg not installed or not found?
 
@@ -561,6 +561,13 @@ A: Check if backend is running and port is correct. In development mode, fronten
 ### Q: Database tables not created?
 
 A: GORM automatically creates tables on first startup, check logs to confirm migration success.
+
+### Q: Where can I find more documentation?
+
+A: Check the [docs/](docs/) directory for comprehensive documentation:
+- [ComfyUI Integration Guide](docs/COMFYUI_INTEGRATION.md)
+- [Deployment Guides](docs/deployment/)
+- [Documentation Index](docs/README.md)
 
 ---
 

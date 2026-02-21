@@ -48,6 +48,7 @@ func SetupRouter(cfg *config.Config, db *gorm.DB, log *logger.Logger, localStora
 		log.Fatalw("Failed to create upload handler", "error", err)
 	}
 	storyboardHandler := handlers2.NewStoryboardHandler(db, cfg, log)
+	workflowHandler := handlers2.NewWorkflowHandler("./workflows", log)
 	sceneHandler := handlers2.NewSceneHandler(db, log, imageGenService)
 	taskHandler := handlers2.NewTaskHandler(db, log)
 	framePromptService := services2.NewFramePromptService(db, cfg, log)
@@ -221,6 +222,14 @@ func SetupRouter(cfg *config.Config, db *gorm.DB, log *logger.Logger, localStora
 		{
 			settings.GET("/language", settingsHandler.GetLanguage)
 			settings.PUT("/language", settingsHandler.UpdateLanguage)
+		}
+
+		workflows := api.Group("/workflows")
+		{
+			workflows.GET("", workflowHandler.ListWorkflows)
+			workflows.POST("/upload", workflowHandler.UploadWorkflow)
+			workflows.GET("/:filename", workflowHandler.GetWorkflow)
+			workflows.DELETE("/:filename", workflowHandler.DeleteWorkflow)
 		}
 	}
 

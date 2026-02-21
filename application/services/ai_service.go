@@ -71,6 +71,12 @@ func (s *AIService) CreateConfig(req *CreateAIConfigRequest) (*models.AIServiceC
 			} else if req.ServiceType == "image" {
 				endpoint = "/v1beta/models/{model}:generateContent"
 			}
+		case "comfyui":
+			// ComfyUI 统一使用 /prompt 端点
+			endpoint = "/prompt"
+			if queryEndpoint == "" {
+				queryEndpoint = "/history/{prompt_id}"
+			}
 		case "openai":
 			if req.ServiceType == "text" {
 				endpoint = "/chat/completions"
@@ -206,6 +212,10 @@ func (s *AIService) UpdateConfig(configID uint, req *UpdateAIConfigRequest) (*mo
 			if serviceType == "text" || serviceType == "image" {
 				updates["endpoint"] = "/v1beta/models/{model}:generateContent"
 			}
+		case "comfyui":
+			// ComfyUI 统一使用 /prompt 端点
+			updates["endpoint"] = "/prompt"
+			updates["query_endpoint"] = "/history/{prompt_id}"
 		case "openai":
 			if serviceType == "text" {
 				updates["endpoint"] = "/chat/completions"
