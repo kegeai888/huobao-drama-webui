@@ -184,8 +184,8 @@ ai:
 
 ```bash
 # Clone the project
-git clone https://github.com/chatfire-AI/huobao-drama.git
-cd huobao-drama
+git clone https://github.com/kegeai888/huobao-drama-webui.git
+cd huobao-drama-webui
 
 # Install Go dependencies
 go mod download
@@ -646,8 +646,8 @@ Configure in 2 minutes: [API Aggregation Site](https://api.chatfire.site/models)
 
 - 🏠 **Location**: Nanjing, China
 - 🚀 **Status**: Startup in Progress
-- 📧 **Email**: [18550175439@163.com](mailto:18550175439@163.com)
-- 🐙 **GitHub**: [https://github.com/chatfire-AI/huobao-drama](https://github.com/chatfire-AI/huobao-drama)
+- 📧 **Email**: [ihuangke222@gmail.com](mailto:ihuangke222@gmail.com)
+- 🐙 **GitHub**: [https://github.com/kegeai888/huobao-drama-webui](https://github.com/kegeai888/huobao-drama-webui)
 
 ### 本 ComfyUI 贡献者
 
@@ -673,7 +673,7 @@ Configure in 2 minutes: [API Aggregation Site](https://api.chatfire.site/models)
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=chatfire-AI/huobao-drama&type=date&legend=top-left)](https://www.star-history.com/#chatfire-AI/huobao-drama&type=date&legend=top-left)
+[![Star History Chart](https://api.star-history.com/svg?repos=kegeai888/huobao-drama-webui&type=date&legend=top-left)](https://www.star-history.com/#kegeai888/huobao-drama-webui&type=date&legend=top-left)
 
 Made with ❤️ by Huobao Team
 

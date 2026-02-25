@@ -1,6 +1,7 @@
 # 火宝短剧 WebUI 二次开发记录
 
 > 基于 huobao-drama-webui 项目，记录所有定制化修改、部署经验和注意事项。
+> 仓库地址：https://github.com/kegeai888/huobao-drama-webui
 
 ---
 
