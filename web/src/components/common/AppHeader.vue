@@ -20,8 +20,8 @@
         <div class="header-right">
           <!-- Contributor Info | 贡献者信息 -->
           <div class="contributor-info">
-            <span class="contributor-text">ComfyUI 贡献者: 你们喜爱的老王</span>
-            <a href="https://space.bilibili.com/97727630" target="_blank" class="bilibili-btn">
+            <span class="contributor-text">构建by科哥</span>
+            <a href="https://space.bilibili.com/54364653" target="_blank" class="bilibili-btn">
               <el-icon><VideoPlay /></el-icon>
               <span>B站</span>
             </a>

@@ -76,7 +76,7 @@ export default {
   },
   settings: {
     title: '设置',
-    aiConfig: 'AI配置',
+    aiConfig: 'API服务配置',
     general: '通用设置',
     systemLanguage: '系统语言',
     currentLanguage: '当前语言',
@@ -89,7 +89,7 @@ export default {
     theme: '主题'
   },
   aiConfig: {
-    title: 'AI 服务配置',
+    title: 'API服务配置',
     addConfig: '添加配置',
     editConfig: '编辑配置',
     back: '返回',
@@ -142,8 +142,7 @@ export default {
     totalProjects: '共 {count} 个项目',
     createNew: '创建新项目',
     createDesc: '开始创作您的短剧项目',
-    aiConfig: 'AI配置',
-    aiConfigTip: '请先配置 AI 服务后再创建项目',
+    aiConfig: 'API服务配置',
     empty: '暂无项目，点击上方按钮创建新项目',
     emptyHint: '点击上方"创建新项目"按钮开始您的第一部短剧',
     editProject: '编辑项目',
@@ -162,7 +161,8 @@ export default {
       voxel: '方块世界',
       urban: '都市',
       guoman3d: '国漫3D',
-      chibi3d: 'Q版3D'
+      chibi3d: 'Q版3D',
+      liveaction: '真人剧'
     },
     deleteConfirm: '确定要删除这个项目吗？',
     noCover: '暂无封面',

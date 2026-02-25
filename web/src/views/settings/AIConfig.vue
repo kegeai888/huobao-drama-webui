@@ -227,6 +227,26 @@ interface ProviderConfig {
 const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
   text: [
     {
+      id: "kegeai",
+      name: "API国际站",
+      models: [
+        "gemini-3.1-pro-preview",
+        "gemini-3-flash-preview",
+        "gemini-2.5-flash",
+        "claude-sonnet-4-6",
+        "gpt-5.2",
+        "gpt-5.1",
+        "deepseek-v3.2",
+        "deepseek-v3.2-fast",
+        "deepseek-v3.1",
+        "deepseek-v3.1-fast",
+        "doubao-seed-1-8-251228",
+        "doubao-seed-1-6-250615",
+        "glm-4.7",
+        "kimi-k2.5",
+      ],
+    },
+    {
       id: "openai",
       name: "OpenAI",
       models: ["gpt-5.2", "gemini-3-flash-preview"],
@@ -247,6 +267,18 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
     },
   ],
   image: [
+    {
+      id: "kegeai",
+      name: "API国际站",
+      models: [
+        "gemini-2.5-flash-image-preview",
+        "gemini-3-pro-image-preview",
+        "doubao-seedream-4-0-250828",
+        "doubao-seedream-4-5-251128",
+        "grok-3-image",
+        "grok-4-image",
+      ],
+    },
     {
       id: "volcengine",
       name: "火山引擎",
@@ -270,6 +302,22 @@ const providerConfigs: Record<AIServiceType, ProviderConfig[]> = {
     },
   ],
   video: [
+    {
+      id: "kegeai",
+      name: "API国际站",
+      models: [
+        "sora-2-all",
+        "sora-2-vip-all",
+        "sora-2-pro-all",
+        "veo_3_1-fast",
+        "veo3.1",
+        "grok-video-3-15s",
+        "grok-video-3-10s",
+        "grok-video-3",
+        "wan2.6-i2v-flash",
+        "kling-video",
+      ],
+    },
     {
       id: "comfyui",
       name: "ComfyUI",
@@ -459,12 +507,11 @@ const showCreateDialog = () => {
   editingId.value = undefined;
   resetForm();
   form.service_type = activeTab.value;
-  // 默认选择 chatfire
-  form.provider = "chatfire";
+  form.provider = "kegeai";
   // 设置默认 base_url
-  form.base_url = "https://api.chatfire.site/v1";
+  form.base_url = "https://api.kegeai.top";
   // 自动生成随机配置名称
-  form.name = generateConfigName("chatfire", activeTab.value);
+  form.name = generateConfigName("kegeai", activeTab.value);
   dialogVisible.value = true;
 };
 

@@ -56,6 +56,7 @@
           <el-option :label="$t('drama.styles.urban')" value="urban" />
           <el-option :label="$t('drama.styles.guoman3d')" value="guoman3d" />
           <el-option :label="$t('drama.styles.chibi3d')" value="chibi3d" />
+          <el-option :label="$t('drama.styles.liveaction')" value="liveaction" />
         </el-select>
       </el-form-item>
     </el-form>
@@ -120,7 +121,7 @@ watch(visible, (val) => {
 const form = reactive<CreateDramaRequest>({
   title: "",
   description: "",
-  style: "ghibli",
+  style: "liveaction",
 });
 
 // Validation rules / 验证规则
