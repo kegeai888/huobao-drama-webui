@@ -92,3 +92,21 @@ build.sh
 huobao-drama-portable/
 *.zip
 *.tar.gz
+
+# Compiled binary
+huobao-drama
+
+# Shell scripts (local only)
+cc.sh
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+web/public/.ipynb_checkpoints/
+
+# Model files
+*.bin
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.gguf
